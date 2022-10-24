@@ -218,6 +218,39 @@ class Xtender(ScomDevice):
         """
         return self.get_software_version()
 
+
+    def get_value(self, address_number, format):
+        """
+            Get value at specified address
+
+            :param int address_number: Number of address from technical spec
+            :param str format: Format of the value (float, int32, enum, byte, bool)
+        """
+        value_format = {
+            'name': 'random',
+            'number': address_number,
+            'property_format': format,
+            'default': 0.0,
+            'studerName': 'random'
+        }
+        return self._read_user_info_by_parameter_id(value_format)
+
+    def set_value(self, address_number, format, value):
+        """
+            Set value at specified address
+
+            :param int address_number: Number of address from technical spec
+            :param str format: Format of the value (float, int32, enum, byte, bool)
+            :param Any value: New value to be set
+
+            :return: returns success
+        """
+        try:
+            self._write_parameter(parameter_id=address_number, value=value, property_format=format)
+        except:
+            return False
+        return True
+
     def set_power_enable(self, enable):
         """Enables/disables the device
         """
